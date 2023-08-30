@@ -6,3 +6,4 @@ second script is going to  the home dir
 5-listfilesdigitonly display content with group id numerically
 6-firstdirectory making a dir in tmp
 7-movethatfile moving betty
+8-firstdelete delete betty
