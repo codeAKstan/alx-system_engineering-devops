@@ -7,3 +7,4 @@ second script is going to  the home dir
 6-firstdirectory making a dir in tmp
 7-movethatfile moving betty
 8-firstdelete delete betty
+9-firstdeletion delete dir
