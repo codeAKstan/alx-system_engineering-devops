@@ -8,3 +8,4 @@ second script is going to  the home dir
 7-movethatfile moving betty
 8-firstdelete delete betty
 9-firstdeletion delete dir
+10-back previous dir
