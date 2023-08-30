@@ -1,2 +1,3 @@
 first script is printing absolute working directory
-second script is printing the home dir
+1-listit to list what is in my directory
+second script is going to  the home dir
