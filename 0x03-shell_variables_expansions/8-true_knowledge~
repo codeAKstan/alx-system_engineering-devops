@@ -1,0 +1,3 @@
+#!/bin/bash
+math=1209
+echo $((math+=128))
