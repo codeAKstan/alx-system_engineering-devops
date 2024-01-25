@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # The script makes a clock
 
 hour=0
