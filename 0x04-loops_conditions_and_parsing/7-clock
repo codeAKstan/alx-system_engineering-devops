@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# The script makes a clock
+
+hour=0
+
+while [ "$hour" -le 12 ]; do
+    echo "Hour: $hour"
+
+    count=1
+    while [ "$count" -ne 60 ]; do
+        echo "$count"
+        ((count++))
+    done
+
+    ((hour++))
+done
