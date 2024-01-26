@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# A script to kill task 7
+
+pkill -f -SIGKILL 7-highlander
