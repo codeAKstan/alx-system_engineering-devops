@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# SSH Configuration
+
+Host 5389de486956
+    HostName 172.17.0.15
+    User root
+    IdentityFile ~/.ssh/school
+    PreferredAuthentications publickey
+    PasswordAuthentication no
