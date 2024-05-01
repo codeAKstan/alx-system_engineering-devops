@@ -1,27 +1,59 @@
 #!/usr/bin/env bash
-# Installing and configuring HAProxy
+# install load balancer
 
-set -e
 
-apt-get update
-apt-get install -y software-properties-common
+echo -e "Updating and doing some minor checks...\n"
 
-add-apt-repository -y ppa:vbernat/haproxy-1.8
+function install() {
+	command -v "$1" &> /dev/null
 
-apt-get update
-apt-get install -y haproxy=1.8.*
+	#shellcheck disable=SC2181
+	if [ $? -ne 0 ]; then
+		echo -e "	Installing: $1\n"
+		sudo apt-get update -y -qq && \
+			sudo apt-get install -y "$1" -qq
+		echo -e "\n"
+	else
+		echo -e "	${1} is already installed.\n"
+	fi
+}
 
-echo "ENABLED=1" > /etc/default/haproxy
+install haproxy #install haproxy
 
-cat <<EOF >> /etc/haproxy/haproxy.cfg
-listen load_balancer
+echo -e "\nSetting up some minor stuff.\n"
+
+# backup default server config file
+sudo cp /etc/haproxy/haproxy.cfg haproxy_default.backup
+
+server_config=\
+"
+defaults
+  mode http
+  timeout client 15s
+  timeout connect 10s
+  timeout server 15s
+  timeout http-request 10s
+
+frontend clickviral-tech-frontend
     bind *:80
-    mode http
-    balance roundrobin
-    option httpclose
-    option forwardfor
-    server web-01 52.90.22.66:80 check
-    server web-02 100.24.238.44:80 check
-EOF
+    default_backend clickviral-tech-backend
 
-systemctl restart haproxy
+backend clickviral-tech-backend
+    balance roundrobin
+    server 516411-web-01 54.145.240.137 check
+    server 516411-web-02 54.164.249.56 check
+"
+
+# shellcheck disable=SC2154
+echo "$server_config" | sudo dd status=none of=/etc/haproxy/haproxy.cfg
+
+# enable haproxy to be started by init script
+echo "ENABLED=1" | sudo dd status=none of=/etc/default/haproxy
+
+echo "configured - Roundrobin On web-01 & web-02"
+
+if [ "$(pgrep -c haproxy)" -le 0 ]; then
+	sudo service haproxy start
+else
+	sudo service haproxy restart
+fi
